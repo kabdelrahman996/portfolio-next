@@ -1,10 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
-import Link from "next/link"; // استيراد Link من Next.js
+import Link from "next/link";
+import { HiMenuAlt3, HiX } from "react-icons/hi"; // أيقونات الموبايل
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // التحكم في منيو الموبايل
 
   const navLinks = [
     { name: "About", href: "#about" },
@@ -14,15 +16,13 @@ export default function Navbar() {
   ];
 
   useEffect(() => {
-    // 1. مراقبة الـ Scroll لتغيير خلفية الـ Navbar
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
 
-    // 2. مراقبة السكاشن لتحديد اللينك النشط (Intersection Observer)
     const observerOptions = {
       root: null,
-      rootMargin: "-20% 0px -70% 0px", // بيحدد امتى السيكشن يعتبر "نشط"
+      rootMargin: "-20% 0px -70% 0px",
       threshold: 0,
     };
 
@@ -34,7 +34,6 @@ export default function Navbar() {
       });
     }, observerOptions);
 
-    // مراقبة كل السكاشن الموجودة في الصفحة
     navLinks.forEach((link) => {
       const section = document.querySelector(link.href);
       if (section) observer.observe(section);
@@ -49,9 +48,9 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 px-6 lg:px-12 ${
-        isScrolled
-          ? "py-4 bg-[#030712]/90 backdrop-blur-md border-b border-white/10 shadow-xl"
+      className={`fixed w-full z-[100] transition-all duration-300 px-6 lg:px-12 ${
+        isScrolled || isMenuOpen
+          ? "py-4 bg-[#030712]/95 backdrop-blur-md border-b border-white/10 shadow-xl"
           : "py-8 bg-transparent"
       }`}
     >
@@ -59,16 +58,17 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           href="/"
-          className="text-2xl font-bold text-white tracking-tighter"
+          className="text-2xl font-bold text-white tracking-tighter z-[110]"
         >
-          <span className="text-cyan-400">AB</span>K.
+          <span className="text-cyan-400">&lt;</span>
+          ABK
+          <span className="text-cyan-400"> /&gt;</span>
         </Link>
 
-        {/* Desktop Links */}
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => {
             const isActive = activeSection === link.href.replace("#", "");
-
             return (
               <Link
                 key={link.name}
@@ -78,7 +78,6 @@ export default function Navbar() {
                 }`}
               >
                 {link.name}
-                {/* خط تحت اللينك النشط */}
                 <span
                   className={`absolute -bottom-1 left-0 h-0.5 bg-cyan-400 transition-all duration-300 ${
                     isActive ? "w-full" : "w-0 group-hover:w-full"
@@ -87,14 +86,51 @@ export default function Navbar() {
               </Link>
             );
           })}
-
-          <Link
+          <a
             href="/resume.pdf"
-            download="Abdelrahman_Khaled_Resume.pdf"
+            download
             className="px-5 py-2 border border-cyan-500 text-cyan-400 text-sm font-medium rounded hover:bg-cyan-500/10 transition-all"
           >
             Resume
-          </Link>
+          </a>
+        </div>
+
+        {/* Mobile Toggle Button */}
+        <button
+          className="md:hidden text-white text-3xl z-[110] focus:outline-none"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          {isMenuOpen ? <HiX className="text-cyan-400" /> : <HiMenuAlt3 />}
+        </button>
+
+        {/* Mobile Menu Overlay */}
+        <div
+          className={`fixed inset-0 bg-[#030712] flex flex-col items-center justify-center gap-8 transition-transform duration-500 ease-in-out md:hidden ${
+            isMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              onClick={() => setIsMenuOpen(false)} // يقفل المنيو لما تضغط على لينك
+              className={`text-2xl font-semibold tracking-widest transition-colors ${
+                activeSection === link.href.replace("#", "")
+                  ? "text-cyan-400"
+                  : "text-gray-400 hover:text-white"
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+          <a
+            href="/resume.pdf"
+            download
+            onClick={() => setIsMenuOpen(false)}
+            className="px-10 py-4 border-2 border-cyan-500 text-cyan-400 text-xl font-bold rounded mt-4"
+          >
+            Resume
+          </a>
         </div>
       </div>
     </nav>
