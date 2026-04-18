@@ -1,12 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { HiMenuAlt3, HiX } from "react-icons/hi"; // أيقونات الموبايل
+import { HiMenuAlt3, HiX } from "react-icons/hi";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // التحكم في منيو الموبايل
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
     { name: "About", href: "#about" },
@@ -16,109 +16,46 @@ export default function Navbar() {
   ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    const observerOptions = {
-      root: null,
-      rootMargin: "-20% 0px -70% 0px",
-      threshold: 0,
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    }, observerOptions);
-
-    navLinks.forEach((link) => {
-      const section = document.querySelector(link.href);
-      if (section) observer.observe(section);
-    });
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      observer.disconnect();
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // منع السكرول لما المنيو تكون مفتوحة
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isMenuOpen]);
 
   return (
     <nav
-      className={`fixed w-full z-[100] transition-all duration-300 px-6 lg:px-12 ${
+      className={`fixed w-full z-[999] transition-all duration-300 px-6 py-4 ${
         isScrolled || isMenuOpen
-          ? "py-4 bg-[#030712]/95 backdrop-blur-md border-b border-white/10 shadow-xl"
-          : "py-8 bg-transparent"
+          ? "bg-[#030712] border-b border-white/10 shadow-xl"
+          : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link
           href="/"
-          className="text-2xl font-bold text-white tracking-tighter z-[110]"
+          className="text-xl font-bold text-white z-[1001]"
+          onClick={() => setIsMenuOpen(false)}
         >
-          <span className="text-cyan-400">&lt;</span>
-          ABK
-          <span className="text-cyan-400"> /&gt;</span>
+          <span className="text-cyan-400">&lt;</span> ABK{" "}
+          <span className="text-cyan-400">/&gt;</span>
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => {
-            const isActive = activeSection === link.href.replace("#", "");
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`text-sm font-medium transition-all duration-300 relative group ${
-                  isActive ? "text-cyan-400" : "text-gray-400 hover:text-white"
-                }`}
-              >
-                {link.name}
-                <span
-                  className={`absolute -bottom-1 left-0 h-0.5 bg-cyan-400 transition-all duration-300 ${
-                    isActive ? "w-full" : "w-0 group-hover:w-full"
-                  }`}
-                ></span>
-              </Link>
-            );
-          })}
-          <a
-            href="/resume.pdf"
-            download
-            className="px-5 py-2 border border-cyan-500 text-cyan-400 text-sm font-medium rounded hover:bg-cyan-500/10 transition-all"
-          >
-            Resume
-          </a>
-        </div>
-
-        {/* Mobile Toggle Button */}
-        <button
-          className="md:hidden text-white text-3xl z-[110] focus:outline-none"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <HiX className="text-cyan-400" /> : <HiMenuAlt3 />}
-        </button>
-
-        {/* Mobile Menu Overlay */}
-        <div
-          className={`fixed inset-0 bg-[#030712] flex flex-col items-center justify-center gap-8 transition-transform duration-500 ease-in-out md:hidden ${
-            isMenuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
           {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
-              onClick={() => setIsMenuOpen(false)} // يقفل المنيو لما تضغط على لينك
-              className={`text-2xl font-semibold tracking-widest transition-colors ${
-                activeSection === link.href.replace("#", "")
-                  ? "text-cyan-400"
-                  : "text-gray-400 hover:text-white"
-              }`}
+              className="text-sm font-medium text-gray-400 hover:text-cyan-400 transition-colors"
             >
               {link.name}
             </Link>
@@ -126,11 +63,49 @@ export default function Navbar() {
           <a
             href="/resume.pdf"
             download
-            onClick={() => setIsMenuOpen(false)}
-            className="px-10 py-4 border-2 border-cyan-500 text-cyan-400 text-xl font-bold rounded mt-4"
+            className="px-4 py-2 border border-cyan-500 text-cyan-400 text-sm rounded hover:bg-cyan-500/10 transition-all"
           >
             Resume
           </a>
+        </div>
+
+        {/* Mobile Toggle */}
+        <button
+          className="md:hidden text-white text-2xl z-[1001] p-2"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          {isMenuOpen ? <HiX className="text-cyan-400" /> : <HiMenuAlt3 />}
+        </button>
+
+        {/* Mobile Menu Overlay - تحسين الشفافية والمقاسات */}
+        <div
+          className={`fixed inset-0 bg-[#030712] z-[1000] flex flex-col items-center justify-center transition-all duration-500 md:hidden ${
+            isMenuOpen
+              ? "opacity-100 pointer-events-auto visible"
+              : "opacity-0 pointer-events-none invisible"
+          }`}
+        >
+          <div className="flex flex-col items-center gap-8 w-full px-10">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsMenuOpen(false)}
+                className="text-xl font-medium text-gray-300 hover:text-cyan-400 transition-colors tracking-widest"
+              >
+                {link.name}
+              </Link>
+            ))}
+            <a
+              href="/resume.pdf"
+              download
+              onClick={() => setIsMenuOpen(false)}
+              className="w-full text-center py-4 border-2 border-cyan-500 text-cyan-400 text-lg font-bold rounded-xl mt-4 active:scale-95 transition-transform"
+            >
+              Download Resume
+            </a>
+          </div>
         </div>
       </div>
     </nav>
