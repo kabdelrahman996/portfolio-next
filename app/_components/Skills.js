@@ -22,7 +22,7 @@ const skillCategories = [
     title: "Frontend Development",
     skills: [
       { name: "React.js", icon: <FaReact className="text-[#61DAFB]" /> },
-      { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
+      { name: "Next.js 16", icon: <SiNextdotjs className="text-white" /> },
       {
         name: "JavaScript (ES6+)",
         icon: <SiJavascript className="text-[#F7DF1E]" />,
@@ -50,6 +50,10 @@ const skillCategories = [
       {
         name: "Supabase (PostgreSQL)",
         icon: <SiSupabase className="text-[#3ECF8E]" />,
+      },
+      {
+        name: "NextAuth",
+        icon: <span className="text-cyan-400 font-bold">N</span>,
       },
     ],
   },
@@ -115,7 +119,7 @@ export default function Skills() {
       </div>
 
       {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-blue-900/10 blur-[120px] rounded-full -z-0"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-blue-900/10 blur-[120px] rounded-full z-0"></div>
     </section>
   );
 }

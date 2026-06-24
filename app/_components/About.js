@@ -1,17 +1,14 @@
-import Image from "next/image";
-
 export default function About() {
   const coreFacts = [
-    "Senior Computer Science student at Zagazig University.",
-    "Specialized in React.js, Next.js, and the MERN stack.",
-    "NTI Graduate with a focus on Full-Stack development.",
-    "Passionate about UI/UX and user-centered design.",
+    "Computer Science & Mathematics graduate from Zagazig University (2026).",
+    "Specialized in React.js, Next.js 16, and the MERN stack.",
+    "Experience building full-stack products with Supabase, NextAuth, and modern state tools.",
+    "Focused on UI/UX, performance, and scalable app architecture.",
   ];
 
   return (
     <section id="about" className="py-24 bg-[#030712] relative">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Section Header */}
         <div className="mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 flex items-center gap-4">
             <span className="text-cyan-400 font-mono text-2xl">01.</span>
@@ -21,38 +18,33 @@ export default function About() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
-          {/* Text Content */}
           <div className="lg:col-span-2 space-y-6 text-gray-400 text-lg leading-relaxed">
             <p>
               Hello! I&apos;m{" "}
               <span className="text-white font-medium">Abdelrahman Khaled</span>
-              , a frontend developer who enjoys creating things that live on the
-              internet. My journey in web development started back in 2024, and
-              since then, I&apos;ve focused on mastering modern technologies to
-              build scalable applications.
+              , a frontend developer and recent Computer Science & Mathematics
+              graduate with a strong focus on building polished digital
+              experiences.
             </p>
 
             <p>
-              Currently, I am a{" "}
-              <span className="text-cyan-400">
-                Senior Computer Science student at Zagazig University
-              </span>
-              . Over the past year, I&apos;ve had the privilege of undergoing
-              intensive training at the{" "}
+              My work centers on modern React and Next.js applications, from
+              full-stack e-commerce storefronts to internal dashboards and
+              corporate websites. I&apos;ve built products using{" "}
+              <span className="text-cyan-400">Next.js 16</span>,{" "}
+              <span className="text-white">React 19</span>, Supabase, and
+              advanced state management tools such as React Query and Redux
+              Toolkit.
+            </p>
+
+            <p>
+              I also completed intensive training at the{" "}
               <span className="text-white">
                 National Telecommunication Institute (NTI)
-              </span>
-              , where I honed my skills in the MEAN/MERN stack.
-            </p>
-
-            <p>
-              I also completed a specialized{" "}
-              <span className="text-white font-medium">
-                UI/UX Design course at Creativa Innovation Hub
-              </span>
-              , which allows me to bridge the gap between design and code,
-              ensuring that every application I build is not only functional but
-              also visually compelling.
+              </span>{" "}
+              and a UI/UX Design course at Creativa Innovation Hub, which helps
+              me combine visual design thinking with strong engineering
+              execution.
             </p>
 
             <p>Here are a few highlights of my background:</p>
@@ -66,7 +58,6 @@ export default function About() {
             </ul>
           </div>
 
-          {/* Decorative Stats/Info Card */}
           <div className="lg:col-span-1 space-y-6">
             <div className="p-8 rounded-2xl bg-white/5 border border-white/10 relative group overflow-hidden">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -77,11 +68,11 @@ export default function About() {
 
               <h4 className="text-white font-bold text-xl mb-4">Education</h4>
               <p className="text-cyan-400 font-medium">
-                Bachelor of Computer Science
+                Computer Science & Mathematics
               </p>
-              <p className="text-gray-400 text-sm">Zagazig University </p>
+              <p className="text-gray-400 text-sm">Zagazig University</p>
               <p className="text-gray-500 text-xs mt-2 italic font-mono">
-                2021 - Present
+                Graduated 2026
               </p>
 
               <div className="mt-8 pt-6 border-t border-white/10">
